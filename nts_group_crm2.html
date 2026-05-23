@@ -1,0 +1,1623 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #0f2040;
+    --navy-light: #1a3560;
+    --accent: #00c4a0;
+    --accent-dim: #007a65;
+    --accent-glow: rgba(0,196,160,0.15);
+    --amber: #f5a623;
+    --red: #e84c4c;
+    --blue: #4a90d9;
+    --text: #e8f0fe;
+    --text-muted: #7a90b0;
+    --border: rgba(255,255,255,0.08);
+    --card: rgba(255,255,255,0.04);
+    --card-hover: rgba(255,255,255,0.07);
+    --success: #00c4a0;
+    --warning: #f5a623;
+    --danger: #e84c4c;
+    --info: #4a90d9;
+    --font-head: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    min-height: 100vh;
+    line-height: 1.5;
+  }
+
+  .app { display: flex; min-height: 100vh; }
+
+  /* Sidebar */
+  .sidebar {
+    width: 220px;
+    min-width: 220px;
+    background: var(--navy-mid);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .logo {
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo-mark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--navy);
+    flex-shrink: 0;
+  }
+
+  .logo-text { font-family: var(--font-head); font-size: 14px; font-weight: 700; color: var(--text); }
+  .logo-sub { font-size: 10px; color: var(--text-muted); letter-spacing: 0.05em; text-transform: uppercase; }
+
+  .nav { padding: 12px 8px; flex: 1; }
+
+  .nav-section { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); padding: 12px 12px 6px; }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text-muted);
+    transition: all 0.15s;
+    margin-bottom: 2px;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+  }
+
+  .nav-item:hover { background: var(--card-hover); color: var(--text); }
+  .nav-item.active { background: var(--accent-glow); color: var(--accent); font-weight: 500; }
+  .nav-item .icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+
+  .badge {
+    margin-left: auto;
+    background: var(--accent);
+    color: var(--navy);
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 1px 6px;
+    min-width: 18px;
+    text-align: center;
+  }
+
+  .badge.red { background: var(--red); color: white; }
+  .badge.amber { background: var(--amber); color: var(--navy); }
+
+  /* Main content */
+  .main { flex: 1; overflow-y: auto; background: var(--navy); }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 28px;
+    border-bottom: 1px solid var(--border);
+    background: var(--navy);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .page-title { font-family: var(--font-head); font-size: 18px; font-weight: 700; color: var(--text); }
+  .page-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  .topbar-actions { display: flex; align-items: center; gap: 10px; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    transition: all 0.15s;
+    font-family: var(--font-body);
+  }
+
+  .btn:hover { background: var(--card-hover); border-color: rgba(255,255,255,0.15); }
+
+  .btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--navy);
+    font-weight: 600;
+  }
+
+  .btn-primary:hover { background: #00ddb5; border-color: #00ddb5; }
+
+  .btn-sm { padding: 5px 12px; font-size: 12px; }
+  .btn-danger { background: rgba(232,76,76,0.15); border-color: rgba(232,76,76,0.3); color: var(--red); }
+  .btn-danger:hover { background: rgba(232,76,76,0.25); }
+
+  /* Page content */
+  .page { padding: 24px 28px; display: none; }
+  .page.active { display: block; }
+
+  /* Dashboard */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+
+  .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 8px; }
+  .stat-value { font-family: var(--font-head); font-size: 28px; font-weight: 700; color: var(--text); }
+  .stat-delta { font-size: 11px; color: var(--accent); margin-top: 4px; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .grid-3 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 24px; }
+
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .panel-title { font-family: var(--font-head); font-size: 14px; font-weight: 600; color: var(--text); }
+  .panel-body { padding: 0; }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    padding: 10px 18px;
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+  }
+
+  td {
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    vertical-align: middle;
+    color: var(--text);
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--card-hover); }
+
+  /* Status pills */
+  .pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .pill-new { background: rgba(74,144,217,0.18); color: var(--blue); }
+  .pill-progress { background: rgba(245,166,35,0.18); color: var(--amber); }
+  .pill-pending { background: rgba(255,255,255,0.08); color: var(--text-muted); }
+  .pill-done { background: rgba(0,196,160,0.18); color: var(--accent); }
+  .pill-cancelled { background: rgba(232,76,76,0.18); color: var(--red); }
+
+  /* Priority dots */
+  .priority { display: flex; align-items: center; gap: 6px; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .dot-high { background: var(--red); }
+  .dot-medium { background: var(--amber); }
+  .dot-low { background: var(--accent); }
+
+  /* Form styles */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+  .form-group.full { grid-column: 1 / -1; }
+
+  label { font-size: 12px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="date"],
+  select,
+  textarea {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 12px;
+    color: var(--text);
+    font-size: 13px;
+    font-family: var(--font-body);
+    transition: border-color 0.15s;
+    outline: none;
+    width: 100%;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+    background: rgba(0,196,160,0.04);
+  }
+
+  select option { background: var(--navy-mid); color: var(--text); }
+
+  textarea { resize: vertical; min-height: 80px; }
+
+  /* Modal */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    width: 600px;
+    max-width: 95vw;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .modal-title { font-family: var(--font-head); font-size: 16px; font-weight: 700; }
+  .modal-body { padding: 20px 22px; }
+  .modal-footer {
+    padding: 14px 22px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  .close-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 20px; padding: 4px; border-radius: 4px; }
+  .close-btn:hover { color: var(--text); background: var(--card); }
+
+  /* Detail drawer */
+  .detail-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 90;
+  }
+
+  .detail-overlay.open { display: block; }
+
+  .detail-drawer {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 420px;
+    height: 100vh;
+    background: var(--navy-mid);
+    border-left: 1px solid var(--border);
+    z-index: 91;
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform 0.25s ease;
+  }
+
+  .detail-overlay.open + .detail-drawer,
+  .detail-drawer.open { transform: translateX(0); }
+
+  .drawer-header {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .drawer-body { padding: 20px; }
+
+  .field-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .field-row:last-child { border-bottom: none; }
+  .field-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 500; }
+  .field-val { font-size: 13px; color: var(--text); text-align: right; max-width: 60%; }
+
+  /* Timeline */
+  .timeline { padding: 0; }
+  .timeline-item { display: flex; gap: 12px; padding: 10px 0; position: relative; }
+  .timeline-dot-wrap { display: flex; flex-direction: column; align-items: center; }
+  .timeline-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; margin-top: 4px; }
+  .timeline-line { width: 1px; background: var(--border); flex: 1; margin-top: 4px; }
+  .timeline-content { flex: 1; }
+  .timeline-event { font-size: 13px; color: var(--text); }
+  .timeline-time { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+  /* Avatar */
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--accent-glow);
+    border: 1px solid var(--accent-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* Notification toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--navy-mid);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-size: 13px;
+    color: var(--text);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast-icon { color: var(--accent); font-size: 16px; }
+
+  /* Search */
+  .search-wrap { position: relative; }
+  .search-wrap input { padding-left: 32px; width: 220px; }
+  .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 14px; pointer-events: none; }
+
+  /* Filter bar */
+  .filter-bar { display: flex; gap: 10px; align-items: center; margin-bottom: 18px; flex-wrap: wrap; }
+
+  /* Empty state */
+  .empty {
+    text-align: center;
+    padding: 48px 20px;
+    color: var(--text-muted);
+  }
+
+  .empty-icon { font-size: 40px; opacity: 0.3; margin-bottom: 12px; }
+  .empty-text { font-size: 14px; margin-bottom: 16px; }
+
+  /* Client card */
+  .client-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .client-card:hover { background: var(--card-hover); border-color: rgba(255,255,255,0.15); }
+
+  .client-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+  /* Section header */
+  .section-head {
+    font-family: var(--font-head);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    margin-top: 20px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-head:first-child { margin-top: 0; }
+
+  /* Service type badges */
+  .svc-tag {
+    display: inline-block;
+    background: rgba(74,144,217,0.12);
+    color: var(--blue);
+    border: 1px solid rgba(74,144,217,0.2);
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+
+  /* Select filter */
+  .filter-select {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 10px;
+    color: var(--text);
+    font-size: 12px;
+    font-family: var(--font-body);
+    cursor: pointer;
+  }
+
+  /* Stat chart bars */
+  .mini-bar { display: flex; align-items: flex-end; gap: 4px; height: 60px; }
+  .bar-col { flex: 1; background: rgba(0,196,160,0.2); border-radius: 3px 3px 0 0; transition: background 0.2s; }
+  .bar-col:hover { background: rgba(0,196,160,0.4); }
+
+  /* Textarea char */
+  .notes-area { min-height: 60px; }
+
+  /* Update status block */
+  .status-update {
+    background: rgba(0,196,160,0.08);
+    border: 1px solid rgba(0,196,160,0.2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+  }
+
+  .update-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .update-event { font-size: 13px; font-weight: 500; color: var(--accent); }
+  .update-time { font-size: 11px; color: var(--text-muted); }
+  .update-note { font-size: 12px; color: var(--text-muted); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-mark">
+        <div class="logo-icon">NTS</div>
+        <div>
+          <div class="logo-text">NTS Group</div>
+          <div class="logo-sub">Security CRM</div>
+        </div>
+      </div>
+    </div>
+    <nav class="nav">
+      <div class="nav-section">Main</div>
+      <button class="nav-item active" onclick="navigate('dashboard')">
+        <span class="icon"><i class="ti ti-layout-dashboard"></i></span> Dashboard
+      </button>
+      <button class="nav-item" onclick="navigate('requests')">
+        <span class="icon"><i class="ti ti-clipboard-list"></i></span> Service Requests
+        <span class="badge" id="badge-new">0</span>
+      </button>
+      <button class="nav-item" onclick="navigate('clients')">
+        <span class="icon"><i class="ti ti-users"></i></span> Clients
+      </button>
+
+      <div class="nav-section">Operations</div>
+      <button class="nav-item" onclick="navigate('schedule')">
+        <span class="icon"><i class="ti ti-calendar"></i></span> Schedule
+      </button>
+      <button class="nav-item" onclick="navigate('reports')">
+        <span class="icon"><i class="ti ti-chart-bar"></i></span> Reports
+      </button>
+
+      <div class="nav-section">Settings</div>
+      <button class="nav-item" onclick="navigate('settings')">
+        <span class="icon"><i class="ti ti-settings"></i></span> Settings
+      </button>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+
+    <!-- Dashboard -->
+    <div id="page-dashboard" class="page active">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Dashboard</div>
+          <div class="page-sub">NTS Group · Electronic Security Solutions</div>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-primary" onclick="openNewRequest()">
+            <i class="ti ti-plus"></i> New Request
+          </button>
+        </div>
+      </div>
+      <div style="padding: 24px 28px;">
+        <div class="stats-grid" id="stats-grid"></div>
+
+        <div class="grid-3">
+          <div class="panel">
+            <div class="panel-header">
+              <span class="panel-title">Recent Service Requests</span>
+              <button class="btn btn-sm" onclick="navigate('requests')">View all</button>
+            </div>
+            <div class="panel-body">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Client</th>
+                    <th>Service</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="dash-requests-tbody">
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <span class="panel-title">By Status</span>
+            </div>
+            <div class="panel-body" style="padding: 18px;">
+              <div id="status-breakdown"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-bottom: 24px;">
+          <div class="panel-header">
+            <span class="panel-title">Recent Clients</span>
+            <button class="btn btn-sm" onclick="navigate('clients')">View all</button>
+          </div>
+          <div class="panel-body">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Company</th><th>Email</th><th>Requests</th><th>Since</th></tr>
+              </thead>
+              <tbody id="dash-clients-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Service Requests -->
+    <div id="page-requests" class="page">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Service Requests</div>
+          <div class="page-sub" id="req-count-sub">All requests</div>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-primary" onclick="openNewRequest()">
+            <i class="ti ti-plus"></i> New Request
+          </button>
+        </div>
+      </div>
+      <div style="padding: 24px 28px;">
+        <div class="filter-bar">
+          <div class="search-wrap">
+            <i class="ti ti-search search-icon"></i>
+            <input type="text" id="req-search" placeholder="Search requests..." oninput="renderRequests()">
+          </div>
+          <select class="filter-select" id="req-status-filter" onchange="renderRequests()">
+            <option value="">All statuses</option>
+            <option value="New">New</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Pending">Pending</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+          <select class="filter-select" id="req-priority-filter" onchange="renderRequests()">
+            <option value="">All priorities</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+          <select class="filter-select" id="req-type-filter" onchange="renderRequests()">
+            <option value="">All services</option>
+            <option value="CCTV Installation">CCTV Installation</option>
+            <option value="Access Control">Access Control</option>
+            <option value="Alarm System">Alarm System</option>
+            <option value="Electric Fencing">Electric Fencing</option>
+            <option value="Intercom System">Intercom System</option>
+            <option value="Maintenance">Maintenance</option>
+            <option value="Security Assessment">Security Assessment</option>
+            <option value="Network Security">Network Security</option>
+          </select>
+        </div>
+        <div class="panel">
+          <table>
+            <thead>
+              <tr>
+                <th>Ref</th>
+                <th>Client</th>
+                <th>Service Type</th>
+                <th>Location</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="requests-tbody"></tbody>
+          </table>
+          <div id="requests-empty" class="empty" style="display:none;">
+            <div class="empty-icon"><i class="ti ti-clipboard-x"></i></div>
+            <div class="empty-text">No service requests found</div>
+            <button class="btn btn-primary" onclick="openNewRequest()"><i class="ti ti-plus"></i> Create first request</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clients -->
+    <div id="page-clients" class="page">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Clients</div>
+          <div class="page-sub" id="client-count-sub">All clients</div>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-primary" onclick="openNewClient()">
+            <i class="ti ti-user-plus"></i> Add Client
+          </button>
+        </div>
+      </div>
+      <div style="padding: 24px 28px;">
+        <div class="filter-bar">
+          <div class="search-wrap">
+            <i class="ti ti-search search-icon"></i>
+            <input type="text" id="client-search" placeholder="Search clients..." oninput="renderClients()">
+          </div>
+        </div>
+        <div class="client-grid" id="client-grid"></div>
+        <div id="clients-empty" class="empty" style="display:none;">
+          <div class="empty-icon"><i class="ti ti-users"></i></div>
+          <div class="empty-text">No clients yet</div>
+          <button class="btn btn-primary" onclick="openNewClient()"><i class="ti ti-user-plus"></i> Add first client</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Schedule -->
+    <div id="page-schedule" class="page">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Schedule</div>
+          <div class="page-sub">Upcoming installations & visits</div>
+        </div>
+      </div>
+      <div style="padding: 24px 28px;">
+        <div class="panel">
+          <table>
+            <thead>
+              <tr><th>Date</th><th>Client</th><th>Service</th><th>Location</th><th>Technician</th><th>Status</th></tr>
+            </thead>
+            <tbody id="schedule-tbody"></tbody>
+          </table>
+          <div id="schedule-empty" class="empty" style="display:none;">
+            <div class="empty-icon"><i class="ti ti-calendar-off"></i></div>
+            <div class="empty-text">No scheduled appointments yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reports -->
+    <div id="page-reports" class="page">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Reports</div>
+          <div class="page-sub">Performance overview</div>
+        </div>
+      </div>
+      <div style="padding: 24px 28px;">
+        <div class="stats-grid" id="report-stats"></div>
+        <div class="grid-2">
+          <div class="panel">
+            <div class="panel-header"><span class="panel-title">Requests by Service Type</span></div>
+            <div class="panel-body" style="padding: 18px;" id="report-by-type"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-header"><span class="panel-title">Monthly Activity</span></div>
+            <div class="panel-body" style="padding: 18px;" id="report-monthly"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings -->
+    <div id="page-settings" class="page">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Settings</div>
+          <div class="page-sub">System configuration</div>
+        </div>
+      </div>
+      <div style="padding: 24px 28px; max-width: 600px;">
+        <div class="panel" style="margin-bottom: 20px;">
+          <div class="panel-header"><span class="panel-title">Company Info</span></div>
+          <div style="padding: 20px;">
+            <div class="form-group">
+              <label>Company Name</label>
+              <input type="text" value="NTS Group">
+            </div>
+            <div class="form-group">
+              <label>Admin Email</label>
+              <input type="email" value="admin@ntsgroup.co.za">
+            </div>
+            <div class="form-group">
+              <label>Support Phone</label>
+              <input type="tel" value="+27 21 000 0000">
+            </div>
+            <button class="btn btn-primary">Save Changes</button>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">Email Notifications</span></div>
+          <div style="padding: 20px;">
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">Clients automatically receive email updates when their request status changes.</p>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <label style="display: flex; gap: 10px; align-items: center; text-transform: none; letter-spacing: 0; font-size: 13px; color: var(--text); cursor: pointer;">
+                <input type="checkbox" checked> Send confirmation on new request
+              </label>
+              <label style="display: flex; gap: 10px; align-items: center; text-transform: none; letter-spacing: 0; font-size: 13px; color: var(--text); cursor: pointer;">
+                <input type="checkbox" checked> Notify on status change
+              </label>
+              <label style="display: flex; gap: 10px; align-items: center; text-transform: none; letter-spacing: 0; font-size: 13px; color: var(--text); cursor: pointer;">
+                <input type="checkbox" checked> Send completion report
+              </label>
+              <label style="display: flex; gap: 10px; align-items: center; text-transform: none; letter-spacing: 0; font-size: 13px; color: var(--text); cursor: pointer;">
+                <input type="checkbox"> Weekly digest to admin
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- New Request Modal -->
+<div class="modal-overlay" id="modal-request">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-request-title">New Service Request</span>
+      <button class="close-btn" onclick="closeModal('modal-request')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Client *</label>
+          <select id="req-client" required>
+            <option value="">Select client...</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Service Type *</label>
+          <select id="req-type" required>
+            <option value="">Select service...</option>
+            <option>CCTV Installation</option>
+            <option>Access Control</option>
+            <option>Alarm System</option>
+            <option>Electric Fencing</option>
+            <option>Intercom System</option>
+            <option>Maintenance</option>
+            <option>Security Assessment</option>
+            <option>Network Security</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Priority</label>
+          <select id="req-priority">
+            <option value="Low">Low</option>
+            <option value="Medium" selected>Medium</option>
+            <option value="High">High</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Preferred Date</label>
+          <input type="date" id="req-date">
+        </div>
+        <div class="form-group full">
+          <label>Site Location / Address *</label>
+          <input type="text" id="req-location" placeholder="e.g. 12 Kloof St, Cape Town">
+        </div>
+        <div class="form-group">
+          <label>Technician Assigned</label>
+          <select id="req-tech">
+            <option value="">Unassigned</option>
+            <option>Thabo Nkosi</option>
+            <option>Jason Williams</option>
+            <option>Sipho Dlamini</option>
+            <option>Anita Jacobs</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="req-status">
+            <option value="New">New</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Pending">Pending</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>Description / Notes</label>
+          <textarea id="req-notes" class="notes-area" placeholder="Describe the service required..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Quote Amount (ZAR)</label>
+          <input type="text" id="req-quote" placeholder="e.g. 4500">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('modal-request')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveRequest()"><i class="ti ti-device-floppy"></i> Save Request</button>
+    </div>
+  </div>
+</div>
+
+<!-- New Client Modal -->
+<div class="modal-overlay" id="modal-client">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-client-title">Add New Client</span>
+      <button class="close-btn" onclick="closeModal('modal-client')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" id="c-name" placeholder="John Smith">
+        </div>
+        <div class="form-group">
+          <label>Company / Business</label>
+          <input type="text" id="c-company" placeholder="Acme Corp">
+        </div>
+        <div class="form-group">
+          <label>Email Address *</label>
+          <input type="email" id="c-email" placeholder="john@company.com">
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" id="c-phone" placeholder="+27 82 000 0000">
+        </div>
+        <div class="form-group full">
+          <label>Physical Address</label>
+          <input type="text" id="c-address" placeholder="123 Main Rd, Cape Town">
+        </div>
+        <div class="form-group">
+          <label>Client Type</label>
+          <select id="c-type">
+            <option>Residential</option>
+            <option>Commercial</option>
+            <option>Industrial</option>
+            <option>Government</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>Notes</label>
+          <textarea id="c-notes" class="notes-area" placeholder="Any additional info..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('modal-client')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveClient()"><i class="ti ti-device-floppy"></i> Save Client</button>
+    </div>
+  </div>
+</div>
+
+<!-- Detail Drawer -->
+<div class="detail-overlay" id="detail-overlay" onclick="closeDrawer()"></div>
+<div class="detail-drawer" id="detail-drawer">
+  <div class="drawer-header">
+    <div>
+      <div style="font-family: var(--font-head); font-size: 15px; font-weight: 700;" id="drawer-title">Request Details</div>
+      <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;" id="drawer-subtitle"></div>
+    </div>
+    <button class="close-btn" onclick="closeDrawer()"><i class="ti ti-x"></i></button>
+  </div>
+  <div class="drawer-body" id="drawer-body"></div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <span class="toast-icon"><i class="ti ti-mail"></i></span>
+  <span id="toast-msg">Email notification sent to client</span>
+</div>
+
+<script>
+let state = {
+  clients: [],
+  requests: [],
+  editingRequestId: null,
+  editingClientId: null
+};
+
+const SERVICE_TYPES = ['CCTV Installation','Access Control','Alarm System','Electric Fencing','Intercom System','Maintenance','Security Assessment','Network Security'];
+
+// --- Storage ---
+async function loadState() {
+  try {
+    const cr = await window.storage.get('nts-clients');
+    const rr = await window.storage.get('nts-requests');
+    if (cr) state.clients = JSON.parse(cr.value);
+    if (rr) state.requests = JSON.parse(rr.value);
+  } catch(e) {}
+  if (!state.clients.length && !state.requests.length) seedData();
+  refreshAll();
+}
+
+async function saveState() {
+  try {
+    await window.storage.set('nts-clients', JSON.stringify(state.clients));
+    await window.storage.set('nts-requests', JSON.stringify(state.requests));
+  } catch(e) {}
+}
+
+function seedData() {
+  state.clients = [
+    { id: 'c1', name: 'Amara Osei', company: 'Osei Holdings', email: 'amara@oseiholdings.co.za', phone: '+27 83 112 3344', address: '45 Victoria Rd, Cape Town', type: 'Commercial', notes: 'VIP client, repeat customer', since: '2024-03-12' },
+    { id: 'c2', name: 'David Pienaar', company: '', email: 'd.pienaar@gmail.com', phone: '+27 72 883 1190', address: '8 Sunset Ave, Bellville', type: 'Residential', notes: '', since: '2024-07-01' },
+    { id: 'c3', name: 'Fatima Hendricks', company: 'Hendricks Real Estate', email: 'fatima@hendricksre.co.za', phone: '+27 61 775 4422', address: '200 Voortrekker Rd, Parow', type: 'Commercial', notes: 'Multiple properties', since: '2023-11-05' },
+    { id: 'c4', name: 'Sipho Mokoena', company: 'Mokoena Logistics', email: 's.mokoena@mklogistics.co.za', phone: '+27 79 554 0033', address: '17 Industrial Way, Montague Gardens', type: 'Industrial', notes: 'Fleet of warehouses', since: '2024-01-20' },
+  ];
+  state.requests = [
+    { id: 'r1', clientId: 'c1', type: 'CCTV Installation', priority: 'High', status: 'In Progress', date: '2025-05-18', location: '45 Victoria Rd, Cape Town', tech: 'Thabo Nkosi', quote: '12500', notes: '16-camera system, full perimeter coverage needed', ref: 'NTS-0001', created: '2025-05-15', updates: [ { event: 'Request created', time: '2025-05-15 09:00', note: 'Client confirmed via email' }, { event: 'Status: In Progress', time: '2025-05-18 08:30', note: 'Technician dispatched' } ] },
+    { id: 'r2', clientId: 'c2', type: 'Alarm System', priority: 'Medium', status: 'New', date: '2025-05-22', location: '8 Sunset Ave, Bellville', tech: '', quote: '3800', notes: 'Perimeter alarm with GSM backup', ref: 'NTS-0002', created: '2025-05-19', updates: [ { event: 'Request created', time: '2025-05-19 14:22', note: '' } ] },
+    { id: 'r3', clientId: 'c3', type: 'Access Control', priority: 'High', status: 'Pending', date: '2025-05-25', location: '200 Voortrekker Rd, Parow', tech: 'Jason Williams', quote: '8200', notes: 'Biometric access for 3 entry points', ref: 'NTS-0003', created: '2025-05-17', updates: [ { event: 'Request created', time: '2025-05-17 10:05', note: '' }, { event: 'Status: Pending', time: '2025-05-20 11:00', note: 'Awaiting equipment delivery' } ] },
+    { id: 'r4', clientId: 'c4', type: 'Electric Fencing', priority: 'Low', status: 'Completed', date: '2025-05-10', location: '17 Industrial Way, Montague Gardens', tech: 'Sipho Dlamini', quote: '22000', notes: 'Full perimeter electric fence, 300m', ref: 'NTS-0004', created: '2025-05-02', updates: [ { event: 'Request created', time: '2025-05-02 08:00', note: '' }, { event: 'Status: Completed', time: '2025-05-10 16:45', note: 'All work done, client signed off' } ] },
+    { id: 'r5', clientId: 'c1', type: 'Maintenance', priority: 'Low', status: 'New', date: '2025-06-01', location: '45 Victoria Rd, Cape Town', tech: 'Anita Jacobs', quote: '1200', notes: 'Annual camera service and lens clean', ref: 'NTS-0005', created: '2025-05-20', updates: [ { event: 'Request created', time: '2025-05-20 12:00', note: '' } ] },
+  ];
+}
+
+// --- Navigation ---
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  const navBtns = document.querySelectorAll('.nav-item');
+  navBtns.forEach(b => { if (b.getAttribute('onclick').includes(page)) b.classList.add('active'); });
+
+  if (page === 'dashboard') renderDashboard();
+  if (page === 'requests') renderRequests();
+  if (page === 'clients') renderClients();
+  if (page === 'schedule') renderSchedule();
+  if (page === 'reports') renderReports();
+}
+
+function refreshAll() {
+  renderDashboard();
+  renderRequests();
+  renderClients();
+  renderSchedule();
+  renderReports();
+  updateBadge();
+}
+
+// --- Helpers ---
+function getClient(id) { return state.clients.find(c => c.id === id); }
+function getRequest(id) { return state.requests.find(r => r.id === id); }
+function clientName(id) { const c = getClient(id); return c ? c.name : 'Unknown'; }
+function initials(name) { return name.split(' ').map(w => w[0]).join('').substring(0,2).toUpperCase(); }
+
+function pilClass(status) {
+  const m = { 'New': 'pill-new', 'In Progress': 'pill-progress', 'Pending': 'pill-pending', 'Completed': 'pill-done', 'Cancelled': 'pill-cancelled' };
+  return m[status] || 'pill-pending';
+}
+
+function priorityDot(p) {
+  return `<div class="priority"><div class="dot dot-${p.toLowerCase()}"></div>${p}</div>`;
+}
+
+function fmtDate(d) {
+  if (!d) return '-';
+  const dt = new Date(d);
+  return dt.toLocaleDateString('en-ZA', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+function nextRef() {
+  const n = state.requests.length + 1;
+  return 'NTS-' + String(n).padStart(4, '0');
+}
+
+function now() {
+  return new Date().toLocaleString('en-ZA', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+}
+
+function updateBadge() {
+  const n = state.requests.filter(r => r.status === 'New').length;
+  document.getElementById('badge-new').textContent = n;
+  document.getElementById('badge-new').style.display = n > 0 ? '' : 'none';
+}
+
+// --- Toast ---
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// --- Dashboard ---
+function renderDashboard() {
+  const total = state.requests.length;
+  const newR = state.requests.filter(r => r.status === 'New').length;
+  const inProg = state.requests.filter(r => r.status === 'In Progress').length;
+  const done = state.requests.filter(r => r.status === 'Completed').length;
+
+  document.getElementById('stats-grid').innerHTML = `
+    <div class="stat-card">
+      <div class="stat-label">Total Requests</div>
+      <div class="stat-value">${total}</div>
+      <div class="stat-delta"><i class="ti ti-clipboard-list"></i> All time</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">New Requests</div>
+      <div class="stat-value" style="color: var(--blue)">${newR}</div>
+      <div class="stat-delta" style="color: var(--blue)"><i class="ti ti-alert-circle"></i> Awaiting action</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">In Progress</div>
+      <div class="stat-value" style="color: var(--amber)">${inProg}</div>
+      <div class="stat-delta" style="color: var(--amber)"><i class="ti ti-loader"></i> Active jobs</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Completed</div>
+      <div class="stat-value" style="color: var(--accent)">${done}</div>
+      <div class="stat-delta" style="color: var(--accent)"><i class="ti ti-circle-check"></i> Jobs done</div>
+    </div>
+  `;
+
+  const tbody = document.getElementById('dash-requests-tbody');
+  const recent = [...state.requests].sort((a,b) => new Date(b.created) - new Date(a.created)).slice(0, 6);
+  tbody.innerHTML = recent.map(r => `
+    <tr style="cursor:pointer" onclick="openRequestDetail('${r.id}')">
+      <td><span style="font-weight:500;color:var(--text-muted);font-size:11px">${r.ref}</span><br><span style="font-size:13px">${clientName(r.clientId)}</span></td>
+      <td><span class="svc-tag">${r.type}</span></td>
+      <td>${priorityDot(r.priority)}</td>
+      <td><span class="pill ${pilClass(r.status)}">${r.status}</span></td>
+    </tr>
+  `).join('') || '<tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:24px">No requests yet</td></tr>';
+
+  const statuses = ['New','In Progress','Pending','Completed','Cancelled'];
+  const colors = ['var(--blue)','var(--amber)','var(--text-muted)','var(--accent)','var(--red)'];
+  const breakdown = document.getElementById('status-breakdown');
+  breakdown.innerHTML = statuses.map((s,i) => {
+    const cnt = state.requests.filter(r => r.status === s).length;
+    const pct = total > 0 ? Math.round((cnt/total)*100) : 0;
+    return `
+      <div style="margin-bottom: 12px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+          <span style="font-size:12px;color:var(--text-muted)">${s}</span>
+          <span style="font-size:12px;font-weight:500;color:${colors[i]}">${cnt}</span>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border-radius:3px;height:5px;overflow:hidden">
+          <div style="background:${colors[i]};width:${pct}%;height:100%;border-radius:3px;transition:width .5s"></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const ctbody = document.getElementById('dash-clients-tbody');
+  ctbody.innerHTML = state.clients.slice(0, 5).map(c => {
+    const cnt = state.requests.filter(r => r.clientId === c.id).length;
+    return `
+      <tr style="cursor:pointer" onclick="openClientDetail('${c.id}')">
+        <td><div style="display:flex;gap:8px;align-items:center"><div class="avatar">${initials(c.name)}</div>${c.name}</div></td>
+        <td style="color:var(--text-muted)">${c.company || '—'}</td>
+        <td style="color:var(--info)">${c.email}</td>
+        <td style="text-align:center">${cnt}</td>
+        <td style="color:var(--text-muted)">${fmtDate(c.since)}</td>
+      </tr>
+    `;
+  }).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:24px">No clients yet</td></tr>';
+}
+
+// --- Requests ---
+function renderRequests() {
+  const search = (document.getElementById('req-search')?.value || '').toLowerCase();
+  const statusF = document.getElementById('req-status-filter')?.value || '';
+  const prioF = document.getElementById('req-priority-filter')?.value || '';
+  const typeF = document.getElementById('req-type-filter')?.value || '';
+
+  let list = state.requests.filter(r => {
+    const c = getClient(r.clientId);
+    const cname = c ? c.name.toLowerCase() : '';
+    const match = !search || cname.includes(search) || r.ref.toLowerCase().includes(search) || r.type.toLowerCase().includes(search) || r.location.toLowerCase().includes(search);
+    return match && (!statusF || r.status === statusF) && (!prioF || r.priority === prioF) && (!typeF || r.type === typeF);
+  });
+
+  list = list.sort((a,b) => new Date(b.created) - new Date(a.created));
+
+  const sub = document.getElementById('req-count-sub');
+  if (sub) sub.textContent = `${list.length} request${list.length !== 1 ? 's' : ''}`;
+
+  const tbody = document.getElementById('requests-tbody');
+  const empty = document.getElementById('requests-empty');
+  if (!list.length) {
+    tbody.innerHTML = '';
+    if (empty) empty.style.display = '';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+
+  tbody.innerHTML = list.map(r => `
+    <tr>
+      <td><span style="font-size:11px;font-weight:600;color:var(--text-muted)">${r.ref}</span></td>
+      <td>
+        <div style="display:flex;gap:8px;align-items:center">
+          <div class="avatar" style="width:26px;height:26px;font-size:10px">${initials(clientName(r.clientId))}</div>
+          <span style="cursor:pointer;color:var(--accent)" onclick="openClientDetail('${r.clientId}')">${clientName(r.clientId)}</span>
+        </div>
+      </td>
+      <td><span class="svc-tag">${r.type}</span></td>
+      <td style="color:var(--text-muted);font-size:12px;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.location}</td>
+      <td>${priorityDot(r.priority)}</td>
+      <td><span class="pill ${pilClass(r.status)}">${r.status}</span></td>
+      <td style="color:var(--text-muted);font-size:12px">${fmtDate(r.date)}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-sm" onclick="openRequestDetail('${r.id}')"><i class="ti ti-eye"></i></button>
+          <button class="btn btn-sm" onclick="editRequest('${r.id}')"><i class="ti ti-edit"></i></button>
+          <button class="btn btn-sm btn-danger" onclick="deleteRequest('${r.id}')"><i class="ti ti-trash"></i></button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+// --- Clients ---
+function renderClients() {
+  const search = (document.getElementById('client-search')?.value || '').toLowerCase();
+  let list = state.clients.filter(c =>
+    !search || c.name.toLowerCase().includes(search) || (c.company || '').toLowerCase().includes(search) || c.email.toLowerCase().includes(search)
+  );
+
+  const sub = document.getElementById('client-count-sub');
+  if (sub) sub.textContent = `${list.length} client${list.length !== 1 ? 's' : ''}`;
+
+  const grid = document.getElementById('client-grid');
+  const empty = document.getElementById('clients-empty');
+  if (!list.length) {
+    grid.innerHTML = '';
+    if (empty) empty.style.display = '';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+
+  grid.innerHTML = list.map(c => {
+    const cnt = state.requests.filter(r => r.clientId === c.id).length;
+    const typeColors = { Residential: 'var(--accent)', Commercial: 'var(--blue)', Industrial: 'var(--amber)', Government: 'var(--red)' };
+    return `
+      <div class="client-card" onclick="openClientDetail('${c.id}')">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <div class="avatar" style="width:38px;height:38px;font-size:13px">${initials(c.name)}</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:500;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.name}</div>
+            <div style="font-size:11px;color:var(--text-muted)">${c.company || 'Individual'}</div>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px"><i class="ti ti-mail" style="margin-right:4px;font-size:12px"></i>${c.email}</div>
+        ${c.phone ? `<div style="font-size:12px;color:var(--text-muted);margin-bottom:8px"><i class="ti ti-phone" style="margin-right:4px;font-size:12px"></i>${c.phone}</div>` : ''}
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">
+          <span style="font-size:11px;color:${typeColors[c.type] || 'var(--accent)'};">${c.type}</span>
+          <span style="font-size:11px;color:var(--text-muted)">${cnt} request${cnt !== 1 ? 's' : ''}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// --- Schedule ---
+function renderSchedule() {
+  const tbody = document.getElementById('schedule-tbody');
+  const empty = document.getElementById('schedule-empty');
+  if (!tbody) return;
+
+  const scheduled = state.requests
+    .filter(r => r.date && r.status !== 'Completed' && r.status !== 'Cancelled')
+    .sort((a,b) => new Date(a.date) - new Date(b.date));
+
+  if (!scheduled.length) {
+    tbody.innerHTML = '';
+    if (empty) empty.style.display = '';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+
+  tbody.innerHTML = scheduled.map(r => `
+    <tr>
+      <td style="font-weight:500">${fmtDate(r.date)}</td>
+      <td>${clientName(r.clientId)}</td>
+      <td><span class="svc-tag">${r.type}</span></td>
+      <td style="color:var(--text-muted);font-size:12px">${r.location}</td>
+      <td style="color:${r.tech ? 'var(--text)' : 'var(--text-muted)'};">${r.tech || 'Unassigned'}</td>
+      <td><span class="pill ${pilClass(r.status)}">${r.status}</span></td>
+    </tr>
+  `).join('');
+}
+
+// --- Reports ---
+function renderReports() {
+  const total = state.requests.length;
+  const done = state.requests.filter(r => r.status === 'Completed').length;
+  const rate = total > 0 ? Math.round((done/total)*100) : 0;
+  const rev = state.requests.filter(r => r.quote).reduce((s,r) => s + parseFloat(r.quote || 0), 0);
+
+  const rs = document.getElementById('report-stats');
+  if (!rs) return;
+  rs.innerHTML = `
+    <div class="stat-card"><div class="stat-label">Total Requests</div><div class="stat-value">${total}</div></div>
+    <div class="stat-card"><div class="stat-label">Completion Rate</div><div class="stat-value" style="color:var(--accent)">${rate}%</div></div>
+    <div class="stat-card"><div class="stat-label">Total Pipeline (ZAR)</div><div class="stat-value" style="color:var(--amber)">R${rev.toLocaleString()}</div></div>
+    <div class="stat-card"><div class="stat-label">Active Clients</div><div class="stat-value" style="color:var(--blue)">${state.clients.length}</div></div>
+  `;
+
+  const byType = document.getElementById('report-by-type');
+  if (byType) {
+    const counts = {};
+    SERVICE_TYPES.forEach(t => { counts[t] = state.requests.filter(r => r.type === t).length; });
+    const maxC = Math.max(...Object.values(counts), 1);
+    byType.innerHTML = Object.entries(counts).map(([t, n]) => `
+      <div style="margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+          <span style="font-size:12px;color:var(--text-muted)">${t}</span>
+          <span style="font-size:12px;font-weight:500">${n}</span>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border-radius:3px;height:4px">
+          <div style="background:var(--accent);width:${Math.round((n/maxC)*100)}%;height:100%;border-radius:3px"></div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  const monthly = document.getElementById('report-monthly');
+  if (monthly) {
+    const months = [];
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(); d.setMonth(d.getMonth() - i);
+      months.push({ label: d.toLocaleString('en', { month: 'short' }), year: d.getFullYear(), month: d.getMonth() });
+    }
+    const counts2 = months.map(m => state.requests.filter(r => { if (!r.created) return false; const d = new Date(r.created); return d.getMonth() === m.month && d.getFullYear() === m.year; }).length);
+    const maxC2 = Math.max(...counts2, 1);
+    monthly.innerHTML = `
+      <div style="display:flex;align-items:flex-end;gap:8px;height:80px;margin-bottom:8px">
+        ${counts2.map((c,i) => `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+          <span style="font-size:10px;color:var(--text-muted)">${c || ''}</span>
+          <div style="width:100%;background:rgba(0,196,160,${0.15 + (c/maxC2)*0.6});border-radius:4px 4px 0 0;height:${Math.max(6, Math.round((c/maxC2)*60))}px"></div>
+        </div>`).join('')}
+      </div>
+      <div style="display:flex;gap:8px">
+        ${months.map(m => `<div style="flex:1;text-align:center;font-size:10px;color:var(--text-muted)">${m.label}</div>`).join('')}
+      </div>
+    `;
+  }
+}
+
+// --- Modals ---
+function openNewRequest() {
+  state.editingRequestId = null;
+  document.getElementById('modal-request-title').textContent = 'New Service Request';
+  const sel = document.getElementById('req-client');
+  sel.innerHTML = '<option value="">Select client...</option>' + state.clients.map(c => `<option value="${c.id}">${c.name}${c.company ? ' · ' + c.company : ''}</option>`).join('');
+  ['req-client','req-type','req-location','req-notes','req-quote'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  document.getElementById('req-priority').value = 'Medium';
+  document.getElementById('req-status').value = 'New';
+  document.getElementById('req-tech').value = '';
+  document.getElementById('req-date').value = '';
+  document.getElementById('modal-request').classList.add('open');
+}
+
+function editRequest(id) {
+  const r = getRequest(id);
+  if (!r) return;
+  state.editingRequestId = id;
+  document.getElementById('modal-request-title').textContent = 'Edit Service Request';
+  const sel = document.getElementById('req-client');
+  sel.innerHTML = '<option value="">Select client...</option>' + state.clients.map(c => `<option value="${c.id}">${c.name}${c.company ? ' · ' + c.company : ''}</option>`).join('');
+  sel.value = r.clientId;
+  document.getElementById('req-type').value = r.type;
+  document.getElementById('req-priority').value = r.priority;
+  document.getElementById('req-status').value = r.status;
+  document.getElementById('req-date').value = r.date;
+  document.getElementById('req-location').value = r.location;
+  document.getElementById('req-tech').value = r.tech;
+  document.getElementById('req-notes').value = r.notes;
+  document.getElementById('req-quote').value = r.quote;
+  document.getElementById('modal-request').classList.add('open');
+}
+
+function openNewClient() {
+  state.editingClientId = null;
+  document.getElementById('modal-client-title').textContent = 'Add New Client';
+  ['c-name','c-company','c-email','c-phone','c-address','c-notes'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+  document.getElementById('c-type').value = 'Residential';
+  document.getElementById('modal-client').classList.add('open');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+function saveRequest() {
+  const clientId = document.getElementById('req-client').value;
+  const type = document.getElementById('req-type').value;
+  const location = document.getElementById('req-location').value.trim();
+
+  if (!clientId || !type || !location) {
+    alert('Please fill in Client, Service Type, and Location.');
+    return;
+  }
+
+  const prevStatus = state.editingRequestId ? getRequest(state.editingRequestId)?.status : null;
+  const newStatus = document.getElementById('req-status').value;
+  const isNew = !state.editingRequestId;
+
+  const reqData = {
+    clientId,
+    type,
+    priority: document.getElementById('req-priority').value,
+    status: newStatus,
+    date: document.getElementById('req-date').value,
+    location,
+    tech: document.getElementById('req-tech').value,
+    notes: document.getElementById('req-notes').value,
+    quote: document.getElementById('req-quote').value,
+  };
+
+  if (isNew) {
+    const r = { ...reqData, id: 'r' + Date.now(), ref: nextRef(), created: new Date().toISOString().split('T')[0], updates: [{ event: 'Request created', time: now(), note: 'Booking confirmed' }] };
+    state.requests.push(r);
+    showToast('✅ Request created — email confirmation sent to ' + clientName(clientId));
+  } else {
+    const r = getRequest(state.editingRequestId);
+    Object.assign(r, reqData);
+    if (prevStatus !== newStatus) {
+      r.updates = r.updates || [];
+      r.updates.push({ event: `Status updated to: ${newStatus}`, time: now(), note: '' });
+      const c = getClient(clientId);
+      showToast('📧 Email sent to ' + (c ? c.email : 'client') + ' — status: ' + newStatus);
+    }
+  }
+
+  closeModal('modal-request');
+  saveState();
+  refreshAll();
+}
+
+function saveClient() {
+  const name = document.getElementById('c-name').value.trim();
+  const email = document.getElementById('c-email').value.trim();
+  if (!name || !email) { alert('Name and email are required.'); return; }
+
+  if (!state.editingClientId) {
+    state.clients.push({
+      id: 'c' + Date.now(),
+      name,
+      company: document.getElementById('c-company').value,
+      email,
+      phone: document.getElementById('c-phone').value,
+      address: document.getElementById('c-address').value,
+      type: document.getElementById('c-type').value,
+      notes: document.getElementById('c-notes').value,
+      since: new Date().toISOString().split('T')[0]
+    });
+    showToast('Client added: ' + name);
+  }
+
+  closeModal('modal-client');
+  saveState();
+  refreshAll();
+}
+
+function deleteRequest(id) {
+  if (!confirm('Delete this service request?')) return;
+  state.requests = state.requests.filter(r => r.id !== id);
+  saveState();
+  refreshAll();
+}
+
+// --- Drawers ---
+function openRequestDetail(id) {
+  const r = getRequest(id);
+  if (!r) return;
+  const c = getClient(r.clientId);
+
+  document.getElementById('drawer-title').textContent = r.ref + ' — ' + r.type;
+  document.getElementById('drawer-subtitle').textContent = c ? c.name : '';
+
+  const fields = [
+    ['Client', c ? `<span style="color:var(--accent);cursor:pointer" onclick="openClientDetail('${c.id}')">${c.name}</span>` : '—'],
+    ['Email', c ? `<a href="mailto:${c.email}" style="color:var(--info)">${c.email}</a>` : '—'],
+    ['Service Type', `<span class="svc-tag">${r.type}</span>`],
+    ['Status', `<span class="pill ${pilClass(r.status)}">${r.status}</span>`],
+    ['Priority', priorityDot(r.priority)],
+    ['Preferred Date', fmtDate(r.date)],
+    ['Location', `<span style="font-size:12px">${r.location}</span>`],
+    ['Technician', r.tech || '<span style="color:var(--text-muted)">Unassigned</span>'],
+    ['Quote', r.quote ? `<span style="color:var(--amber);font-weight:600">R ${parseFloat(r.quote).toLocaleString()}</span>` : '—'],
+    ['Notes', r.notes ? `<span style="font-size:12px;color:var(--text-muted)">${r.notes}</span>` : '—'],
+  ];
+
+  const timeline = (r.updates || []).map((u, i, arr) => `
+    <div class="timeline-item">
+      <div class="timeline-dot-wrap">
+        <div class="timeline-dot"></div>
+        ${i < arr.length - 1 ? '<div class="timeline-line"></div>' : ''}
+      </div>
+      <div class="timeline-content">
+        <div class="timeline-event">${u.event}</div>
+        ${u.note ? `<div class="timeline-time" style="margin-bottom:2px">${u.note}</div>` : ''}
+        <div class="timeline-time">${u.time}</div>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('drawer-body').innerHTML = `
+    <div style="margin-bottom:20px">
+      ${fields.map(([l,v]) => `<div class="field-row"><span class="field-label">${l}</span><span class="field-val">${v}</span></div>`).join('')}
+    </div>
+    <div class="section-head">Activity & Updates</div>
+    <div class="timeline" style="margin-top:12px">${timeline || '<div style="color:var(--text-muted);font-size:13px">No activity yet</div>'}</div>
+    <div style="margin-top:20px;display:flex;gap:8px">
+      <button class="btn btn-sm btn-primary" onclick="editRequest('${r.id}');closeDrawer()"><i class="ti ti-edit"></i> Edit</button>
+      <button class="btn btn-sm" onclick="updateStatus('${r.id}')"><i class="ti ti-refresh"></i> Update Status</button>
+    </div>
+  `;
+
+  document.getElementById('detail-overlay').classList.add('open');
+  document.getElementById('detail-drawer').classList.add('open');
+}
+
+function openClientDetail(id) {
+  const c = getClient(id);
+  if (!c) return;
+  const reqs = state.requests.filter(r => r.clientId === id);
+
+  document.getElementById('drawer-title').textContent = c.name;
+  document.getElementById('drawer-subtitle').textContent = c.company || c.type;
+
+  const fields = [
+    ['Email', `<a href="mailto:${c.email}" style="color:var(--info)">${c.email}</a>`],
+    ['Phone', c.phone || '—'],
+    ['Company', c.company || '—'],
+    ['Type', c.type],
+    ['Address', c.address || '—'],
+    ['Client Since', fmtDate(c.since)],
+    ['Notes', c.notes || '—'],
+  ];
+
+  const reqList = reqs.map(r => `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
+      <div>
+        <span style="font-size:11px;color:var(--text-muted);margin-right:8px">${r.ref}</span>
+        <span class="svc-tag">${r.type}</span>
+      </div>
+      <span class="pill ${pilClass(r.status)}">${r.status}</span>
+    </div>
+  `).join('');
+
+  document.getElementById('drawer-body').innerHTML = `
+    <div style="display:flex;gap:10px;align-items:center;margin-bottom:18px">
+      <div class="avatar" style="width:48px;height:48px;font-size:16px">${initials(c.name)}</div>
+      <div>
+        <div style="font-size:15px;font-weight:600">${c.name}</div>
+        <div style="font-size:12px;color:var(--text-muted)">${c.type} client · ${reqs.length} request${reqs.length !== 1 ? 's' : ''}</div>
+      </div>
+    </div>
+    ${fields.map(([l,v]) => `<div class="field-row"><span class="field-label">${l}</span><span class="field-val">${v}</span></div>`).join('')}
+    <div class="section-head" style="margin-top:20px">Service History</div>
+    ${reqList || '<div style="color:var(--text-muted);font-size:13px;padding:12px 0">No requests yet</div>'}
+    <div style="margin-top:16px">
+      <button class="btn btn-sm btn-primary" onclick="openNewRequest()"><i class="ti ti-plus"></i> New Request</button>
+    </div>
+  `;
+
+  document.getElementById('detail-overlay').classList.add('open');
+  document.getElementById('detail-drawer').classList.add('open');
+}
+
+function closeDrawer() {
+  document.getElementById('detail-overlay').classList.remove('open');
+  document.getElementById('detail-drawer').classList.remove('open');
+}
+
+function updateStatus(id) {
+  const r = getRequest(id);
+  if (!r) return;
+  const statuses = ['New','In Progress','Pending','Completed','Cancelled'];
+  const next = statuses[(statuses.indexOf(r.status) + 1) % statuses.length];
+  if (!confirm(`Update status from "${r.status}" to "${next}"?`)) return;
+  const prev = r.status;
+  r.status = next;
+  r.updates = r.updates || [];
+  r.updates.push({ event: `Status updated to: ${next}`, time: now(), note: 'Updated via CRM' });
+  const c = getClient(r.clientId);
+  if (c) showToast('📧 Email sent to ' + c.email + ' — status: ' + next);
+  saveState();
+  refreshAll();
+  openRequestDetail(id);
+}
+
+// init
+loadState();
+</script>
+</body>
+</html>
